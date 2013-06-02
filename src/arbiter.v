@@ -18,7 +18,8 @@
 
 
 module arbiter
-  #(parameter NUM_PORTS = 6)
+  #(parameter
+    NUM_PORTS = 6)
    (input                       clk,
     input                       rst,
     input      [0:NUM_PORTS-1]  request,
@@ -57,17 +58,19 @@ module arbiter
      * Implementation
      */
 
-    always @(posedge clk)
-        grant <= token & request;
-
-    always @(posedge clk)
-        active <= |(token & request);
-
     assign next         = ~|(token & request);
 
     assign order_right  = (order_right>>1) | order;
 
     assign gate         = (order_right>>1) ^ order_right;
+
+
+    always @(posedge clk)
+        grant <= token & request;
+
+
+    always @(posedge clk)
+        active <= |(token & request);
 
 
     always @(posedge clk)
