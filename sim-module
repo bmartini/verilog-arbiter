@@ -1,0 +1,43 @@
+#!/bin/bash
+set -o errexit
+
+
+# Should give an arg
+if [ $# == 0 ]
+then
+    echo "? executes the testbench for the module"
+    echo "syntax:"
+    echo "  ./sim-module <module-name>"
+    exit
+fi
+
+cd src
+
+# UUT should contain the name of the unit under test
+if [ -f $1_tb.v ]
+then
+    UUT=$1
+else
+    echo "syntax:"
+    echo "  ./sim-module <module-name>"
+    echo ""
+    echo "Where <module-name>_tb.v should exist"
+    exit
+fi
+
+# compile current unit
+echo "UUT = $UUT"
+iverilog -o ../$UUT ${UUT}_tb.v
+cd ..
+
+# run current simul/testbench
+if [ -f $UUT ]
+then
+    ./$UUT
+else
+    echo "iverilog failed"
+    exit
+fi
+
+
+echo "test for unit ${UUT} done"
