@@ -144,21 +144,40 @@ module arbiter_tb;
         request = 9'b010000001;
         repeat(15) @(posedge clk);
         request = 9'b010000000;
+        repeat(5) @(posedge clk);
+        request = 9'b010000100;
+        repeat(10) @(posedge clk);
+        request = 9'b000000100;
         repeat(15) @(posedge clk);
         request = 9'b000100000;
         repeat(15) @(posedge clk);
-
         request = 9'b000000000;
         @(posedge clk);
         request = 9'b000100000;
-        repeat(15) @(posedge clk);
+        repeat(10) @(posedge clk);
 
 
 `ifdef TB_VERBOSE
     $display("TEST when all ports request priority");
 `endif
         request = 9'b111111111;
-        repeat(15) @(posedge clk);
+        repeat(10) @(posedge clk);
+        request = 9'b111011111;
+        @(posedge clk);
+        request = 9'b111111111;
+        repeat(10) @(posedge clk);
+        request = 9'b110111111;
+        @(posedge clk);
+        request = 9'b111111111;
+        repeat(10) @(posedge clk);
+        request = 9'b101111111;
+        @(posedge clk);
+        request = 9'b111111111;
+        repeat(10) @(posedge clk);
+        request = 9'b011111111;
+        @(posedge clk);
+        request = 9'b111111111;
+        repeat(10) @(posedge clk);
 
 
         @(posedge clk);
