@@ -23,8 +23,6 @@ module arbiter
    (input                       clk,
     input                       rst,
     input      [0:NUM_PORTS-1]  request,
-//    output     [0:NUM_PORTS-1]  grant,
-//    output                      active
     output reg [0:NUM_PORTS-1]  grant,
     output reg                  active
 );
@@ -96,15 +94,6 @@ module arbiter
 
         end
     endgenerate
-
-
-//    assign grant        = token & request;
-//    assign active       = |(grant);
-//    assign next         = ~active;
-//    // Ring counter
-//    always @(posedge clk)
-//        if      (rst)               token <= 'b1;
-//        else if (next & |(request)) token <= {token, token[NUM_PORTS-1]};
 
 
 endmodule
