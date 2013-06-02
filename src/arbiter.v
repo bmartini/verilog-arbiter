@@ -49,7 +49,7 @@ module arbiter
     wire [NUM_PORTS-1:0]    gate;
 
     reg  [NUM_PORTS-1:0]    token;
-    wire [NUM_PORTS-1:0]    token_possibles [NUM_PORTS-1:0];
+    wire [NUM_PORTS-1:0]    token_lookahead [NUM_PORTS-1:0];
 
 
     /**
@@ -78,7 +78,7 @@ module arbiter
             for (yy = 0; yy < NUM_PORTS; yy = yy + 1) begin : TOKEN_
 
                 if (gate[yy]) begin
-                    token <= token_possibles[yy];
+                    token <= token_lookahead[yy];
                 end
             end
         end
@@ -88,9 +88,9 @@ module arbiter
     generate
         for (xx = 0; xx < NUM_PORTS; xx = xx + 1) begin : ORDER_
 
-            assign token_possibles[xx]  = {token, token[NUM_PORTS-1:xx]};
+            assign token_lookahead[xx]  = {token, token[NUM_PORTS-1:xx]};
 
-            assign order[xx]            = |(token_possibles[xx] & request);
+            assign order[xx]            = |(token_lookahead[xx] & request);
 
         end
     endgenerate
