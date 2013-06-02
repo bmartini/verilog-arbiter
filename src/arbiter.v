@@ -47,7 +47,7 @@ module arbiter
     wire                    next;
     wire [NUM_PORTS-1:0]    order;
     wire [NUM_PORTS-1:0]    order_right;
-    wire [NUM_PORTS-1:0]    order_gate;
+    wire [NUM_PORTS-1:0]    gate;
 
     reg  [NUM_PORTS-1:0]    token;
     wire [NUM_PORTS-1:0]    token_possibles [NUM_PORTS-1:0];
@@ -67,7 +67,7 @@ module arbiter
 
     assign order_right  = (order_right>>1) | order;
 
-    assign order_gate   = (order_right>>1) ^ order_right;
+    assign gate         = (order_right>>1) ^ order_right;
 
 
     always @(posedge clk)
@@ -76,7 +76,7 @@ module arbiter
 
             for (yy = 0; yy < NUM_PORTS; yy = yy + 1) begin : TOKEN_
 
-                if (order_gate[yy]) begin
+                if (gate[yy]) begin
                     token <= token_possibles[yy];
                 end
             end
