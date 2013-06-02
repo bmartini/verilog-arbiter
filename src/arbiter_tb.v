@@ -133,10 +133,8 @@ module arbiter_tb;
 `endif
 
         request = 9'b100000001;
-        //request = 3'b101;
         repeat(15) @(posedge clk);
         request = 9'b000000010;
-        //request = 3'b001;
         repeat(15) @(posedge clk);
         request = 9'b010000001;
         repeat(15) @(posedge clk);
@@ -144,13 +142,10 @@ module arbiter_tb;
         request = 9'b000000001;
         @(posedge clk);
         request = 9'b010000001;
-        //request = 3'b011;
         repeat(15) @(posedge clk);
         request = 9'b010000000;
-        //request = 3'b010;
         repeat(15) @(posedge clk);
         request = 9'b000100000;
-        //request = 3'b000;
         repeat(15) @(posedge clk);
 
         request = 9'b000000000;
