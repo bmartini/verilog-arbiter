@@ -106,7 +106,7 @@ module arbiter
     generate
         for (xx = 0; xx < NUM_PORTS; xx = xx + 1) begin : ORDER_
 
-            assign token_select[(((xx + 1) * NUM_PORTS) -1):(xx * NUM_PORTS)] = token_possibles[xx];
+            assign token_select[(xx * NUM_PORTS) +: NUM_PORTS] = token_possibles[xx];
 
             assign token_possibles[xx]  = {token, token[NUM_PORTS-1:xx]};
 

@@ -53,7 +53,7 @@ module bus_mux
         for (zz = 0; zz < DATA_NUM; zz = zz + 1) begin: FLAT_BUS_ASSIGN_
 
             assign multi_data[zz] = gate[zz] ?
-                up_data[(((zz + 1) * DATA_WIDTH) - 1):(zz * DATA_WIDTH)] : 'b0;
+                up_data[(zz * DATA_WIDTH) +: DATA_WIDTH] : {DATA_WIDTH{1'b0}};
 
         end
     endgenerate
