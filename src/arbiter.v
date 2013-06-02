@@ -16,7 +16,6 @@
  */
 `ifndef _arbiter_ `define _arbiter_
 
-`include "bus_mux.v"
 
 module arbiter
   #(parameter NUM_PORTS = 6)
@@ -53,19 +52,6 @@ module arbiter
     reg  [NUM_PORTS-1:0]    token;
     wire [NUM_PORTS-1:0]    token_possibles [NUM_PORTS-1:0];
 
-    wire [(NUM_PORTS*NUM_PORTS)-1:0]    token_select;
-    wire [NUM_PORTS-1:0]                token_selected;
-
-
-    bus_mux #(
-        .DATA_WIDTH (NUM_PORTS),
-        .DATA_NUM   (NUM_PORTS))
-    token_mux (
-        .gate       (order_gate),
-        .up_data    (token_select),
-        .down_data  (token_selected)
-    );
-
 
     /**
      * Implementation
@@ -84,29 +70,22 @@ module arbiter
     assign order_gate   = (order_right>>1) ^ order_right;
 
 
-//    always @(posedge clk)
-//        if      (rst) token <= 'b1;
-//        else if (next) begin
-//
-//            for (yy = 0; yy < NUM_PORTS; yy = yy + 1) begin : TOKEN_
-//
-//                if (order_gate[yy]) begin
-//                    token <= token_possibles[yy];
-//                end
-//            end
-//        end
-
-
     always @(posedge clk)
-        if      (rst)                   token <= 'b1;
-        else if (next & |(order_gate))  token <= token_selected;
+        if (rst) token <= 'b1;
+        else if (next) begin
+
+            for (yy = 0; yy < NUM_PORTS; yy = yy + 1) begin : TOKEN_
+
+                if (order_gate[yy]) begin
+                    token <= token_possibles[yy];
+                end
+            end
+        end
 
 
     genvar xx;
     generate
         for (xx = 0; xx < NUM_PORTS; xx = xx + 1) begin : ORDER_
-
-            assign token_select[(xx * NUM_PORTS) +: NUM_PORTS] = token_possibles[xx];
 
             assign token_possibles[xx]  = {token, token[NUM_PORTS-1:xx]};
 
