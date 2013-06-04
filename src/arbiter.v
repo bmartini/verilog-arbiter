@@ -45,8 +45,6 @@ module arbiter
 
     wire                    next;
     wire [NUM_PORTS-1:0]    order;
-    wire [NUM_PORTS-1:0]    order_right;
-    wire [NUM_PORTS-1:0]    gate;
 
     reg  [NUM_PORTS-1:0]    token;
     wire [NUM_PORTS-1:0]    token_lookahead [NUM_PORTS-1:0];
@@ -56,11 +54,7 @@ module arbiter
      * Implementation
      */
 
-    assign next         = ~|(token & request);
-
-    assign order_right  = (order_right>>1) | order;
-
-    assign gate         = (order_right>>1) ^ order_right;
+    assign next = ~|(token & request);
 
 
     always @(posedge clk)
@@ -77,7 +71,7 @@ module arbiter
 
             for (yy = 0; yy < NUM_PORTS; yy = yy + 1) begin : TOKEN_
 
-                if (gate[yy]) begin
+                if (order[yy]) begin
                     token <= token_lookahead[yy];
                 end
             end
