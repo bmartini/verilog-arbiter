@@ -1,13 +1,20 @@
 /**
  * Module: arbiter
  *
- * Description: a look ahead, round-robing parametrized arbiter.
+ * Description:
+ *  A look ahead, round-robing parametrized arbiter.
  *
- * request  <>  each bit is controlled by an actor and each actor can 'request'
- *              ownership of the shared resource by bring high its request bit.
+ * <> request
+ *  each bit is controlled by an actor and each actor can 'request' ownership
+ *  of the shared resource by bring high its request bit.
  *
- * grant    <>  when an actor is to be given ownership of shared resource its
- *              'grant' bit is driven high.
+ * <> grant
+ *  when an actor has been given ownership of shared resource its 'grant' bit
+ *  is driven high
+ *
+ * <> active
+ *  is brought high by the arbiter when (any) actor has been given ownership
+ *  of shared resource.
  *
  *
  * Created: Sat Jun  1 20:26:44 EDT 2013
