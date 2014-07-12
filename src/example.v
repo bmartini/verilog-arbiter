@@ -25,8 +25,8 @@ module example
    (input                       clk,
     input                       rst,
 
-    input       [0:NUM_PORTS-1] request,
-    output      [0:NUM_PORTS-1] grant,
+    input       [NUM_PORTS-1:0] request,
+    output      [NUM_PORTS-1:0] grant,
 
     output                      active
 );
@@ -45,8 +45,8 @@ module example
      * Internal signals
      */
 
-    wire [0:NUM_PORTS-1]  timed_req;
-    wire [0:NUM_PORTS-1]  timed_grant;
+    wire [NUM_PORTS-1:0]  timed_req;
+    wire [NUM_PORTS-1:0]  timed_grant;
 
 
 

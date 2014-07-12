@@ -29,8 +29,8 @@ module arbiter
     NUM_PORTS = 6)
    (input                       clk,
     input                       rst,
-    input      [0:NUM_PORTS-1]  request,
-    output reg [0:NUM_PORTS-1]  grant,
+    input      [NUM_PORTS-1:0]  request,
+    output reg [NUM_PORTS-1:0]  grant,
     output reg                  active
 );
 

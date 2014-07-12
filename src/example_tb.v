@@ -63,8 +63,8 @@ module example_tb;
      */
     reg     rst;
 
-    reg  [0:NUM_PORTS-1]    request;
-    wire [0:NUM_PORTS-1]    grant;
+    reg  [NUM_PORTS-1:0]    request;
+    wire [NUM_PORTS-1:0]    grant;
     wire                    active;
 
     /**
