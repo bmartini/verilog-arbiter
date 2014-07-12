@@ -39,6 +39,8 @@ module arbiter
      * Local parameters
      */
 
+    localparam WRAP_LENGTH = 2*NUM_PORTS;
+
 `ifdef VERBOSE
     initial $display("Bus arbiter with %d units", NUM_PORTS);
 `endif
@@ -56,6 +58,7 @@ module arbiter
     reg  [NUM_PORTS-1:0]    token;
     wire [NUM_PORTS-1:0]    token_nx;
     wire [NUM_PORTS-1:0]    token_lookahead [NUM_PORTS-1:0];
+    wire [WRAP_LENGTH-1:0]  token_wrap;
 
     wire [NUM_PORTS-1:0]    token_gated     [0:NUM_PORTS-1];
     wire [NUM_PORTS-1:0]    invert          [0:NUM_PORTS-1];
@@ -63,6 +66,8 @@ module arbiter
     /**
      * Implementation
      */
+
+    assign token_wrap   = {token, token};
 
     assign next         = ~|(token & request);
 
@@ -89,7 +94,7 @@ module arbiter
     generate
         for (xx = 0; xx < NUM_PORTS; xx = xx + 1) begin : ORDER_
 
-            assign token_lookahead[xx]  = {token, token[NUM_PORTS-1:xx]};
+            assign token_lookahead[xx]  = token_wrap[xx +: NUM_PORTS];
 
             assign order[xx]            = |(token_lookahead[xx] & request);
 
