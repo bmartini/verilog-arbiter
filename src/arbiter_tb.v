@@ -62,6 +62,7 @@ module arbiter_tb;
 
     reg  [NUM_PORTS-1:0]    request;
     wire [NUM_PORTS-1:0]    grant;
+    wire [$clog2(NUM_PORTS)-1:0]    select;
     wire                    active;
 
     /**
@@ -75,6 +76,7 @@ module arbiter_tb;
         .rst       (rst),
         .request   (request),
         .grant     (grant),
+        .select    (select),
         .active    (active)
     );
 
@@ -92,6 +94,9 @@ module arbiter_tb;
             request,
             grant,
             active,
+
+            "\t%d",
+            select,
         );
     endtask // display_signals
 

@@ -31,7 +31,7 @@ module arbiter
     input                       rst,
     input      [NUM_PORTS-1:0]  request,
     output reg [NUM_PORTS-1:0]  grant,
-    output reg [$clog2(NUM_PORTS)-1:0] sel,
+    output reg [$clog2(NUM_PORTS)-1:0]  select,
     output reg                  active
 );
 
@@ -86,8 +86,10 @@ module arbiter
     always @(posedge clk)
         grant <= token & request;
 
+
     always @(posedge clk)
-        sel <= ff1(token & request);
+        select <= ff1(token & request);
+
 
     always @(posedge clk)
         active <= |(token & request);
