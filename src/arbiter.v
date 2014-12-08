@@ -27,19 +27,35 @@
 module arbiter
   #(parameter
     NUM_PORTS = 6)
-   (input                       clk,
-    input                       rst,
-    input      [NUM_PORTS-1:0]  request,
-    output reg [NUM_PORTS-1:0]  grant,
-    output reg                  active
+   (input                               clk,
+    input                               rst,
+    input      [NUM_PORTS-1:0]          request,
+    output reg [NUM_PORTS-1:0]          grant,
+    output reg [$clog2(NUM_PORTS)-1:0]  select,
+    output reg                          active
 );
-
 
     /**
      * Local parameters
      */
 
     localparam WRAP_LENGTH = 2*NUM_PORTS;
+
+
+    // Find First 1 - Start from MSB and count downwards, returns 0 when no
+    // bit set
+    function [$clog2(NUM_PORTS)-1:0] ff1;
+        input [NUM_PORTS-1:0] in;
+        integer i;
+        begin
+            ff1 = 0;
+            for (i = NUM_PORTS-1; i >= 0; i=i-1) begin
+                if (in[i])
+                    ff1 = i;
+            end
+        end
+    endfunction
+
 
 `ifdef VERBOSE
     initial $display("Bus arbiter with %d units", NUM_PORTS);
@@ -71,6 +87,10 @@ module arbiter
 
     always @(posedge clk)
         grant <= token & request;
+
+
+    always @(posedge clk)
+        select <= ff1(token & request);
 
 
     always @(posedge clk)

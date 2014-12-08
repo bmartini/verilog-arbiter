@@ -58,24 +58,26 @@ module arbiter_tb;
     /**
      *  signals, registers and wires
      */
-    reg                     rst;
+    reg                             rst;
 
-    reg  [NUM_PORTS-1:0]    request;
-    wire [NUM_PORTS-1:0]    grant;
-    wire                    active;
+    reg  [NUM_PORTS-1:0]            request;
+    wire [NUM_PORTS-1:0]            grant;
+    wire [$clog2(NUM_PORTS)-1:0]    select;
+    wire                            active;
 
     /**
      * Unit under test
      */
 
     arbiter #(
-        .NUM_PORTS (NUM_PORTS))
+        .NUM_PORTS  (NUM_PORTS))
     uut (
-        .clk       (clk),
-        .rst       (rst),
-        .request   (request),
-        .grant     (grant),
-        .active    (active)
+        .clk        (clk),
+        .rst        (rst),
+        .request    (request),
+        .grant      (grant),
+        .select     (select),
+        .active     (active)
     );
 
 
@@ -92,13 +94,16 @@ module arbiter_tb;
             request,
             grant,
             active,
+
+            "\t%d",
+            select,
         );
     endtask // display_signals
 
     task display_header;
-        $display({
+        $display(
             "\t\ttime\trst",
-            ""});
+        );
     endtask
 
 
