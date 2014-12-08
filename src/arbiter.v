@@ -12,6 +12,9 @@
  *  when an actor has been given ownership of shared resource its 'grant' bit
  *  is driven high
  *
+ * <> select
+ *  binary representation of the grant signal (optional use)
+ *
  * <> active
  *  is brought high by the arbiter when (any) actor has been given ownership
  *  of shared resource.
