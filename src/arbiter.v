@@ -2,7 +2,7 @@
  * Module: arbiter
  *
  * Description:
- *  A look ahead, round-robing parametrized arbiter.
+ *  A look ahead, round-robing parameterized arbiter.
  *
  * <> request
  *  each bit is controlled by an actor and each actor can 'request' ownership
@@ -29,13 +29,14 @@
 
 module arbiter
   #(parameter
-    NUM_PORTS = 6)
-   (input                               clk,
-    input                               rst,
-    input      [NUM_PORTS-1:0]          request,
-    output reg [NUM_PORTS-1:0]          grant,
-    output reg [$clog2(NUM_PORTS)-1:0]  select,
-    output reg                          active
+    NUM_PORTS   = 6,
+    SEL_WIDTH   = $clog2(NUM_PORTS)) // do not overwrite
+   (input                       clk,
+    input                       rst,
+    input      [NUM_PORTS-1:0]  request,
+    output reg [NUM_PORTS-1:0]  grant,
+    output reg [SEL_WIDTH-1:0]  select,
+    output reg                  active
 );
 
     /**
@@ -47,14 +48,20 @@ module arbiter
 
     // Find First 1 - Start from MSB and count downwards, returns 0 when no
     // bit set
-    function [$clog2(NUM_PORTS)-1:0] ff1;
-        input [NUM_PORTS-1:0] in;
-        integer i;
+    function [SEL_WIDTH-1:0] ff1 (
+        input [NUM_PORTS-1:0] in
+    );
+        reg                 set;
+        reg [SEL_WIDTH-1:0] i;
+
         begin
-            ff1 = 0;
-            for (i = NUM_PORTS-1; i >= 0; i=i-1) begin
-                if (in[i])
+            set = 1'b0;
+            ff1 = 'b0;
+            for (i = 0; i > NUM_PORTS-1; i=i+1) begin
+                if (in[i] & ~set) begin
+                    set = 1'b1;
                     ff1 = i;
+                end
             end
         end
     endfunction
