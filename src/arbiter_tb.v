@@ -49,7 +49,8 @@ module arbiter_tb;
      * Local parameters
      */
 
-    parameter NUM_PORTS = 9;
+    localparam NUM_PORTS = 9;
+    localparam SEL_WIDTH = ((NUM_PORTS > 1) ? $clog2(NUM_PORTS) : 1);
 
 `ifdef TB_VERBOSE
     initial $display("Testbench for unit 'arbiter'");
@@ -58,19 +59,19 @@ module arbiter_tb;
     /**
      *  signals, registers and wires
      */
-    reg                             rst;
+    reg                     rst;
 
-    reg  [NUM_PORTS-1:0]            request;
-    wire [NUM_PORTS-1:0]            grant;
-    wire [$clog2(NUM_PORTS)-1:0]    select;
-    wire                            active;
+    reg  [NUM_PORTS-1:0]    request;
+    wire [NUM_PORTS-1:0]    grant;
+    wire [SEL_WIDTH-1:0]    select;
+    wire                    active;
 
     /**
      * Unit under test
      */
 
     arbiter #(
-        .NUM_PORTS  (NUM_PORTS))
+        .NUM_PORTS (NUM_PORTS))
     uut (
         .clk        (clk),
         .rst        (rst),
