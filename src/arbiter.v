@@ -57,7 +57,7 @@ module arbiter
         begin
             set = 1'b0;
             ff1 = 'b0;
-            for (i = 0; i < NUM_PORTS[SEL_WIDTH-1:0]; i=i+1) begin
+            for (i = 'b0; i < NUM_PORTS[SEL_WIDTH-1:0]; i=i+'b1) begin
                 if (in[i] & ~set) begin
                     set = 1'b1;
                     ff1 = i;
